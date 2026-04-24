@@ -36,7 +36,7 @@ Suggested edge cases:
 - Erase head, middle, and missing value.
 - `to_vector` on empty and multi-node lists.
 - Duplicate keys in the hash table.
-- Collisions and rehashing.
+- Collisions handled with separate chaining.
 - Erasing a missing key from a non-empty table.
 
 ## Person 3: Binary Search Tree 90 min
