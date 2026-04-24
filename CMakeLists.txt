@@ -10,6 +10,7 @@ add_library(ds_core
 	src/datastructures/queue.cpp
 	src/datastructures/linked_list.cpp
 	src/datastructures/binary_search_tree.cpp
+	src/datastructures/hash_table.cpp
 )
 
 target_include_directories(ds_core PUBLIC include)
