@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.16)
+project(DataStructuresProject2026 VERSION 0.1.0 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_library(ds_core
+	src/datastructures/stack.cpp
+	src/datastructures/queue.cpp
+	src/datastructures/linked_list.cpp
+	src/datastructures/binary_search_tree.cpp
+)
+
+target_include_directories(ds_core PUBLIC include)
+
+add_executable(DataStructuresProject2026
+	src/main.cpp
+)
+
+target_link_libraries(DataStructuresProject2026 PRIVATE ds_core)
+
+enable_testing()
+
+add_executable(ds_tests
+	test/test_main.cpp
+)
+
+target_link_libraries(ds_tests PRIVATE ds_core)
+add_test(NAME ds_tests COMMAND ds_tests)
+
+add_executable(ds_challenge_tests
+	test/challenge_tests.cpp
+)
+
+target_link_libraries(ds_challenge_tests PRIVATE ds_core)
+add_test(NAME ds_challenge_tests COMMAND ds_challenge_tests)
+

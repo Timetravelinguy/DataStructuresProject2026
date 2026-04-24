@@ -1,0 +1,23 @@
+build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+
+# Visual Studio generated files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.ilk
+*.pdb
+*.obj
+*.idb
+*.recipe
+
+# CLion / VS Code
+.idea/
+.vscode/
