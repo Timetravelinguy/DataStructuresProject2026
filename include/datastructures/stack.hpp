@@ -67,17 +67,27 @@ std::size_t Stack<T>::size() const {
 
 template <typename T>
 bool Stack<T>::contains(const T& value) const {
-    throw std::logic_error("TODO(Person 1): implement Stack::contains");
+    for (const T& item : data_) {
+        if (item == value) {
+            return true;
+        }
+    }
+    return false;
 }
 
 template <typename T>
 std::size_t Stack<T>::index_of(const T& value) const {
-    throw std::logic_error("TODO(Person 1): implement Stack::index_of");
+    for (std::size_t i = 0; i < data_.size(); ++i) {
+        if (data_[i] == value) {
+            return i;
+        }
+    }
+    return npos;
 }
 
 template <typename T>
 void Stack<T>::reverse() {
-    throw std::logic_error("TODO(Person 1): implement Stack::reverse");
+    std::reverse(data_.begin(), data_.end());
 }
 
 }  // namespace ds

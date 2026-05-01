@@ -59,12 +59,32 @@ std::size_t Queue<T>::size() const {
 
 template <typename T>
 void Queue<T>::rotate(std::size_t k) {
-    throw std::logic_error("TODO(Person 1): implement Queue::rotate");
+    if (data_.empty()) {
+        return;  // Nothing to rotate if queue is empty
+    }
+    
+    k = k % data_.size();  // Handle k larger than size using modulo
+    
+    for (std::size_t i = 0; i < k; ++i) {
+        T front_value = data_.front();  // Get front element
+        data_.pop_front();               // Remove it from front
+        data_.push_back(front_value);    // Add it to back
+    }
 }
 
 template <typename T>
 bool Queue<T>::is_palindrome() const {
-    throw std::logic_error("TODO(Person 1): implement Queue::is_palindrome");
+    if (data_.empty() || data_.size() == 1) {
+        return true;  // Empty or single-element queue is a palindrome
+    }
+    
+    // Compare elements from both ends moving towards the center
+    for (std::size_t i = 0; i < data_.size() / 2; ++i) {
+        if (data_[i] != data_[data_.size() - 1 - i]) {
+            return false;  // Mismatch found
+        }
+    }
+    return true;  // All matches, it's a palindrome
 }
 
 }  // namespace ds
