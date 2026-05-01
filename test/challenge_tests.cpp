@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "datastructures/binary_search_tree.hpp"
+#include "datastructures/hash_table.hpp"
 #include "datastructures/linked_list.hpp"
 #include "datastructures/queue.hpp"
 #include "datastructures/stack.hpp"
@@ -52,6 +53,17 @@ int main() {
     //     expect(list.to_vector() == expected, "LinkedList to_vector order");
     //     expect(list.erase_first(2), "LinkedList should erase existing value");
     //     expect(!list.erase_first(99), "LinkedList should return false when value missing");
+    // }
+
+    // Person 2 hash table checks:
+    // {
+    //     ds::HashTable<int> table;
+    //     table.insert(10);
+    //     table.insert(18); // likely collision if bucket count is small
+    //     expect(table.contains(10), "HashTable contains inserted value");
+    //     expect(table.contains(18), "HashTable should handle collisions");
+    //     expect(table.erase(10), "HashTable erase existing value");
+    //     expect(!table.contains(10), "HashTable should no longer contain erased value");
     // }
 
     // Person 3 checks (BinarySearchTree):

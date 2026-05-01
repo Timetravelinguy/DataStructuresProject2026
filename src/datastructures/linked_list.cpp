@@ -1,3 +1,5 @@
 #include "datastructures/linked_list.hpp"
 
-// Template implementations are in the header.
+// Explicit instantiations
+template class ds::LinkedList<std::string>;
+

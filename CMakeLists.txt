@@ -21,6 +21,19 @@ add_executable(DataStructuresProject2026
 
 target_link_libraries(DataStructuresProject2026 PRIVATE ds_core)
 
+add_executable(demo
+	demo.cpp
+)
+
+target_link_libraries(demo PRIVATE ds_core)
+
+add_executable(book_manager
+	src/book_manager/main.cpp
+	src/book_manager/library.cpp
+)
+
+target_link_libraries(book_manager PRIVATE ds_core)
+
 enable_testing()
 
 add_executable(ds_tests

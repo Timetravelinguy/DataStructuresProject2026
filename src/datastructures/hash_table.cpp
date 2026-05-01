@@ -1,3 +1,5 @@
 #include "datastructures/hash_table.hpp"
 
-// Template implementations are in the header.
+// Explicit instantiations
+template class ds::HashTable<int>;
+

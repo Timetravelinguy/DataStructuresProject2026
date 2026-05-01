@@ -1,3 +1,4 @@
 #include "datastructures/binary_search_tree.hpp"
 
-// Template implementations are in the header.
+// Explicit instantiations for commonly used concrete types
+template class ds::BinarySearchTree<int>;

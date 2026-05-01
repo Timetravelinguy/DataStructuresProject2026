@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
@@ -18,16 +17,8 @@ public:
     const T& top() const;
     bool empty() const;
     std::size_t size() const;
-
-    // TODO(Person 1): Return true when value is present in the stack.
-    // Hint: iterate from data_.begin() to data_.end().
     bool contains(const T& value) const;
-
-    // TODO(Person 1): Return index from bottom of stack, or npos if absent.
     std::size_t index_of(const T& value) const;
-
-    // TODO(Person 1): Reverse stack order in-place.
-    // Hint: std::reverse(data_.begin(), data_.end()).
     void reverse();
 
 private:

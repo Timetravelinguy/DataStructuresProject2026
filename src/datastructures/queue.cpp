@@ -1,3 +1,5 @@
 #include "datastructures/queue.hpp"
 
-// Template implementations are in the header.
+// Explicit instantiations
+template class ds::Queue<int>;
+

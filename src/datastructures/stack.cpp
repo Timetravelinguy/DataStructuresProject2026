@@ -1,3 +1,5 @@
 #include "datastructures/stack.hpp"
 
-// Template implementations are in the header.
+// Explicit instantiations for commonly used types
+template class ds::Stack<int>;
+

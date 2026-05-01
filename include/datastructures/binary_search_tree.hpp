@@ -11,15 +11,8 @@ class BinarySearchTree {
 public:
     void insert(const T& value);
     bool contains(const T& value) const;
-
-    // TODO(Person 3): Return sorted values using in-order traversal.
     std::vector<T> inorder() const;
-
-    // TODO(Person 3): Return longest path length from root to leaf.
     std::size_t height() const;
-
-    // TODO(Person 3): Remove a value from the tree.
-    // Cases: leaf, one child, two children.
     bool remove(const T& value);
 
 private:
@@ -44,7 +37,6 @@ void BinarySearchTree<T>::insert(const T& value) {
             return;
         }
     }
-
     *current = new Node{value, nullptr, nullptr};
 }
 
@@ -65,17 +57,60 @@ bool BinarySearchTree<T>::contains(const T& value) const {
 
 template <typename T>
 std::vector<T> BinarySearchTree<T>::inorder() const {
-    throw std::logic_error("TODO(Person 3): implement BinarySearchTree::inorder");
+    std::vector<T> values;
+    auto traverse = [&](auto&& self, Node* node) -> void {
+        if (node == nullptr) return;
+        self(self, node->left);
+        values.push_back(node->value);
+        self(self, node->right);
+    };
+    traverse(traverse, root_);
+    return values;
 }
 
 template <typename T>
 std::size_t BinarySearchTree<T>::height() const {
-    throw std::logic_error("TODO(Person 3): implement BinarySearchTree::height");
+    auto compute = [&](auto&& self, Node* node) -> std::size_t {
+        if (node == nullptr) return 0;
+        std::size_t left = self(self, node->left);
+        std::size_t right = self(self, node->right);
+        return 1 + (left > right ? left : right);
+    };
+    return compute(compute, root_);
 }
 
 template <typename T>
 bool BinarySearchTree<T>::remove(const T& value) {
-    throw std::logic_error("TODO(Person 3): implement BinarySearchTree::remove");
+    Node** ptr = &root_;
+    while (*ptr != nullptr) {
+        if (value < (*ptr)->value) {
+            ptr = &(*ptr)->left;
+        } else if (value > (*ptr)->value) {
+            ptr = &(*ptr)->right;
+        } else {
+            Node* node = *ptr;
+            if (node->left == nullptr) {
+                *ptr = node->right;
+                delete node;
+                return true;
+            }
+            if (node->right == nullptr) {
+                *ptr = node->left;
+                delete node;
+                return true;
+            }
+            Node** succ_ptr = &node->right;
+            while ((*succ_ptr)->left != nullptr) {
+                succ_ptr = &(*succ_ptr)->left;
+            }
+            Node* succ = *succ_ptr;
+            node->value = succ->value;
+            *succ_ptr = succ->right;
+            delete succ;
+            return true;
+        }
+    }
+    return false;
 }
 
 }  // namespace ds

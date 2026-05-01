@@ -12,15 +12,8 @@ public:
     void push_front(const T& value);
     bool empty() const;
     std::size_t size() const;
-
-    // TODO(Person 2): Add to end of list in O(n).
     void push_back(const T& value);
-
-    // TODO(Person 2): Remove first node equal to value.
-    // Return true if a node is removed, false otherwise.
     bool erase_first(const T& value);
-
-    // TODO(Person 2): Return current list elements from head to tail.
     std::vector<T> to_vector() const;
 
 private:
@@ -52,17 +45,49 @@ std::size_t LinkedList<T>::size() const {
 
 template <typename T>
 void LinkedList<T>::push_back(const T& value) {
-    throw std::logic_error("TODO(Person 2): implement LinkedList::push_back");
+    Node* new_node = new Node{value, nullptr};
+
+    if (head_ == nullptr) {
+        head_ = new_node;
+        ++size_;
+        return;
+    }
+
+    Node* current = head_;
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+
+    current->next = new_node;
+    ++size_;
 }
 
 template <typename T>
 bool LinkedList<T>::erase_first(const T& value) {
-    throw std::logic_error("TODO(Person 2): implement LinkedList::erase_first");
+    Node** current = &head_;
+    while (*current != nullptr) {
+        if ((*current)->value == value) {
+            Node* removed = *current;
+            *current = removed->next;
+            delete removed;
+            --size_;
+            return true;
+        }
+        current = &(*current)->next;
+    }
+    return false;
 }
 
 template <typename T>
 std::vector<T> LinkedList<T>::to_vector() const {
-    throw std::logic_error("TODO(Person 2): implement LinkedList::to_vector");
+    std::vector<T> values;
+    values.reserve(size_);
+    Node* current = head_;
+    while (current != nullptr) {
+        values.push_back(current->value);
+        current = current->next;
+    }
+    return values;
 }
 
 }  // namespace ds
