@@ -9,6 +9,11 @@ namespace ds {
 template <typename T>
 class BinarySearchTree {
 public:
+    BinarySearchTree() = default;
+    ~BinarySearchTree();
+    BinarySearchTree(const BinarySearchTree&) = delete;
+    BinarySearchTree& operator=(const BinarySearchTree&) = delete;
+
     void insert(const T& value);
     bool contains(const T& value) const;
     std::vector<T> inorder() const;
@@ -24,6 +29,18 @@ private:
 
     Node* root_ = nullptr;
 };
+
+template <typename T>
+BinarySearchTree<T>::~BinarySearchTree() {
+    auto destroy = [&](auto&& self, Node* node) -> void {
+        if (node == nullptr) return;
+        self(self, node->left);
+        self(self, node->right);
+        delete node;
+    };
+    destroy(destroy, root_);
+    root_ = nullptr;
+}
 
 template <typename T>
 void BinarySearchTree<T>::insert(const T& value) {

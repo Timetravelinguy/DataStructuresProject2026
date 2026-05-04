@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -48,16 +49,32 @@ struct Book {
     void display() const;
 };
 
+std::ostream& operator<<(std::ostream& os, const Book& book);
+
 class LibraryManager {
 public:
     LibraryManager();
-    void init_sample();
     void run_cli();
+    bool add_book(const Book& book, std::string& message);
+    bool remove_book(long long isbn, Book& removed);
+    bool search_by_id(long long isbn, Book& out) const;
+    std::vector<Book> search_by_title_or_category(const std::string& query) const;
+    std::vector<Book> list_books() const;
+    bool borrow_book(long long isbn, std::string& message);
+    bool return_book(long long isbn, std::string& message);
 
 private:
     void print_menu() const;
     void print_help() const;
-    static std::string to_lower(const std::string& s);
+    void handle_add_book();
+    void handle_remove_book();
+    void handle_view_books();
+    void handle_search_books();
+    void handle_view_history();
+    void handle_checkout_queue();
+    void handle_search_by_id();
+    void handle_borrow_book();
+    void handle_return_book();
     void seed_sample_books();
     bool find_book_by_isbn(long long isbn, Book& out) const;
     bool remove_book_by_isbn(long long isbn, Book& removed);

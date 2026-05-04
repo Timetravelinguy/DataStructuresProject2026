@@ -9,6 +9,11 @@ namespace ds {
 template <typename T>
 class LinkedList {
 public:
+    LinkedList() = default;
+    ~LinkedList();
+    LinkedList(const LinkedList&) = delete;
+    LinkedList& operator=(const LinkedList&) = delete;
+
     void push_front(const T& value);
     bool empty() const;
     std::size_t size() const;
@@ -25,6 +30,18 @@ private:
     Node* head_ = nullptr;
     std::size_t size_ = 0;
 };
+
+template <typename T>
+LinkedList<T>::~LinkedList() {
+    Node* current = head_;
+    while (current != nullptr) {
+        Node* next = current->next;
+        delete current;
+        current = next;
+    }
+    head_ = nullptr;
+    size_ = 0;
+}
 
 template <typename T>
 void LinkedList<T>::push_front(const T& value) {

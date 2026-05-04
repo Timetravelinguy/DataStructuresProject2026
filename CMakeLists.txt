@@ -39,8 +39,10 @@ add_test(NAME ds_tests COMMAND ds_tests)
 
 add_executable(ds_challenge_tests
 	test/challenge_tests.cpp
+	src/book_manager/library.cpp
 )
 
 target_link_libraries(ds_challenge_tests PRIVATE ds_core)
+target_include_directories(ds_challenge_tests PRIVATE src/book_manager)
 add_test(NAME ds_challenge_tests COMMAND ds_challenge_tests)
 

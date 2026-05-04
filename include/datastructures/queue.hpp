@@ -16,7 +16,6 @@ public:
     std::size_t size() const;
     void rotate(std::size_t k);
     bool is_palindrome() const;
-    // Standard dequeue operation
 
 private:
     std::deque<T> data_;
@@ -34,8 +33,6 @@ void Queue<T>::dequeue() {
     }
     data_.pop_front();
 }
-
-// (Removed pop_front_for_copy) 
 
 template <typename T>
 const T& Queue<T>::front() const {

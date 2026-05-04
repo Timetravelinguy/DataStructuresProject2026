@@ -6,7 +6,7 @@ This script is written for a short live presentation. It assumes one person is d
 
 Say:
 
-"Our project is a data structures library and book manager built in C++17. We implemented our own stack, queue, linked list, hash table, and binary search tree, then used them in a menu-driven book manager initialized with sample data."
+"Our project is a C++ library system built with our own data structures. We used stack, queue, linked list, hash table, and binary search tree in one menu-driven program."
 
 Then point out the main ideas:
 
@@ -20,7 +20,7 @@ Start `book_manager.exe` and show the main menu.
 
 Say:
 
-"We added a real interactive console flow, cancellation support, validation, and help text so the program is easier to use during a live demo."
+"The menu is simple, input is validated, and we can cancel operations and return to the menu."
 
 ## 3. Demo the Required Book Features
 
@@ -28,7 +28,7 @@ Show these actions in order:
 
 1. Add a new book.
 2. Search by Book ID.
-3. Search by title, author, or category.
+3. Search by title or category.
 4. Borrow a book and show that its status changes.
 5. Return the same book and show it becomes available again.
 6. Remove a book by Book ID.
@@ -36,7 +36,7 @@ Show these actions in order:
 Suggested script while demoing:
 
 - "Each book stores ID, title, author, year, category, and status."
-"Borrowing and returning update the status in memory for the running session."
+- "Borrowing and returning update the status in memory for the running session."
 - "Removal is done by Book ID, which matches the project spec."
 
 ## 4. Notes on Program State
@@ -61,7 +61,7 @@ Say:
 
 End with:
 
-"Our project meets the book manager requirements and the data structure challenge requirements. The main tradeoff we made was choosing simple, explainable implementations over highly optimized production code."
+"Our project meets the assignment requirements. We focused on clear, understandable implementations that we can explain."
 
 ## Quick Timing Version
 
