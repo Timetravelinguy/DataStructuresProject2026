@@ -5,15 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_library(ds_core
-	src/datastructures/stack.cpp
-	src/datastructures/queue.cpp
-	src/datastructures/linked_list.cpp
-	src/datastructures/binary_search_tree.cpp
-	src/datastructures/hash_table.cpp
-)
+add_library(ds_core INTERFACE)
 
-target_include_directories(ds_core PUBLIC include)
+target_include_directories(ds_core INTERFACE include)
 
 add_executable(DataStructuresProject2026
 	src/main.cpp

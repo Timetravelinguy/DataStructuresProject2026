@@ -16,6 +16,8 @@ public:
     std::size_t size() const;
     void rotate(std::size_t k);
     bool is_palindrome() const;
+    // Provide a simple way to pop front while preserving the original (used by persistence)
+    void pop_front_for_copy();
 
 private:
     std::deque<T> data_;
@@ -31,6 +33,12 @@ void Queue<T>::dequeue() {
     if (data_.empty()) {
         throw std::underflow_error("Cannot dequeue from an empty queue");
     }
+    data_.pop_front();
+}
+
+template <typename T>
+void Queue<T>::pop_front_for_copy() {
+    // Same as dequeue but no exception handling for callers that check empty
     data_.pop_front();
 }
 
