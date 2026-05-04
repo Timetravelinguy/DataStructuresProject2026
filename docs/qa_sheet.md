@@ -28,9 +28,9 @@ Because front and back operations are both efficient, which matches a real FIFO 
 
 Because stack operations only need the back of the container, and vector gives simple and fast push and pop behavior.
 
-### 7. Why is the book manager saved to files?
+### 7. How is the program state handled?
 
-So the data persists between runs, which makes the program feel like a real application instead of a temporary demo.
+The book manager starts with a seeded set of sample books for the demo. Changes are kept in memory during the running session.
 
 ### 8. What happens if the user enters invalid input?
 
@@ -42,7 +42,7 @@ The current operation stops and the program returns to the menu.
 
 ### 10. How do borrow and return work?
 
-Borrow marks a book as borrowed and Return marks it as available again. The status is saved to disk after the change.
+Borrow marks a book as borrowed and Return marks it as available again. The status is updated in memory for the session.
 
 ### 11. How do you remove a book?
 
@@ -50,7 +50,7 @@ Books are removed by Book ID, which matches the required spec and avoids ambiguo
 
 ### 12. What was the hardest part of the project?
 
-The hardest part was balancing clean classroom-friendly code with correct memory management, persistence, and user input handling.
+The hardest part was balancing clean classroom-friendly code with correct memory management and robust user input handling.
 
 ### 13. What tradeoff did you make in the hash table?
 
@@ -71,6 +71,6 @@ We would add search filters, richer reporting, and possibly a more advanced bala
 ## Quick One-Line Answers
 
 - "We implemented the structures ourselves."
-- "We used persistence so the program keeps its state."
+- "The program starts with a seeded dataset for demonstration."
 - "We validated input to make the console safer."
 - "We chose simple structures that are easy to defend in class."

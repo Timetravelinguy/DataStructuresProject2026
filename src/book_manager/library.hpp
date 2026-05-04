@@ -58,11 +58,6 @@ private:
     void print_menu() const;
     void print_help() const;
     static std::string to_lower(const std::string& s);
-    void load_or_seed_storage();
-    bool load_from_disk();
-    void save_to_disk() const;
-    bool load_queue_from_disk();
-    void save_queue_to_disk() const;
     void seed_sample_books();
     bool find_book_by_isbn(long long isbn, Book& out) const;
     bool remove_book_by_isbn(long long isbn, Book& removed);
@@ -73,5 +68,4 @@ private:
     ds::Queue<Book> checkout_queue_;
     ds::LinkedList<Book> wishlist_;
     ds::HashTable<long long> isbn_db_;
-    bool storage_ready_;
 };

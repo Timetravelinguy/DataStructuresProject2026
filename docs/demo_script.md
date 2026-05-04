@@ -6,13 +6,13 @@ This script is written for a short live presentation. It assumes one person is d
 
 Say:
 
-"Our project is a data structures library and book manager built in C++17. We implemented our own stack, queue, linked list, hash table, and binary search tree, then used them in a menu-driven book manager with file persistence."
+"Our project is a data structures library and book manager built in C++17. We implemented our own stack, queue, linked list, hash table, and binary search tree, then used them in a menu-driven book manager initialized with sample data."
 
 Then point out the main ideas:
 
 - The challenge structures live in `include/datastructures/`.
 - The book manager lives in `src/book_manager/`.
-- The program uses file storage so data stays between runs.
+- The program is initialized with seeded sample data for the demo.
 
 ## 2. Show the Program
 
@@ -36,18 +36,12 @@ Show these actions in order:
 Suggested script while demoing:
 
 - "Each book stores ID, title, author, year, category, and status."
-- "Borrowing and returning update the stored status and save immediately."
+"Borrowing and returning update the status in memory for the running session."
 - "Removal is done by Book ID, which matches the project spec."
 
-## 4. Show Persistence
+## 4. Notes on Program State
 
-Close the program and reopen it.
-
-Say:
-
-"The data is saved to disk, so the books and checkout queue still exist after restart."
-
-If needed, show the `books.db` and `queue.db` files in the workspace.
+Explain that the program starts with a seeded collection of sample books for the demo. Changes are kept in memory during the run.
 
 ## 5. Show the Custom Data Structures
 
@@ -73,7 +67,7 @@ End with:
 
 - 30 seconds: project overview
 - 2 minutes: live book manager demo
-- 1 minute: persistence and validation
+- 1 minute: validation and demo state
 - 1 minute: data structure explanation
 - 30 seconds: wrap-up
 

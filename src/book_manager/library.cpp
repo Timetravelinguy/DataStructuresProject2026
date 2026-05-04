@@ -2,11 +2,8 @@
 
 #include <algorithm>
 #include <cctype>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
 #include <limits>
-#include <sstream>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -205,7 +202,7 @@ void print_queue_snapshot(const ds::Queue<Book>& queue) {
     while (!copy.empty()) {
         std::cout << position << ". ";
         print_book_record(copy.front());
-        copy.pop_front_for_copy();
+        copy.dequeue();
         ++position;
     }
 }
@@ -258,12 +255,12 @@ void Book::display() const {
     print_book_record(*this);
 }
 
-LibraryManager::LibraryManager() : storage_ready_(false) {
-    load_or_seed_storage();
+LibraryManager::LibraryManager() {
+    seed_sample_books();
 }
 
 void LibraryManager::init_sample() {
-    load_or_seed_storage();
+    seed_sample_books();
 }
 
 std::string LibraryManager::to_lower(const std::string& s) {
@@ -310,58 +307,10 @@ void LibraryManager::seed_sample_books() {
     }
 }
 
-void LibraryManager::load_or_seed_storage() {
-    if (storage_ready_) {
-        return;
-    }
-
-    const bool loaded_from_disk = load_from_disk();
-    if (!loaded_from_disk || library_.inorder().size() < 30) {
-        seed_sample_books();
-        save_to_disk();
-    }
-
-    load_queue_from_disk();
-
-    storage_ready_ = true;
-}
-
-bool LibraryManager::load_queue_from_disk() {
-    std::ifstream input("queue.db");
-    if (!input.is_open()) {
-        return false;
-    }
-
-    long long isbn = 0;
-    bool any = false;
-    while (input >> isbn) {
-        Book book;
-        if (find_book_by_isbn(isbn, book)) {
-            checkout_queue_.enqueue(book);
-            any = true;
-        }
-    }
-
-    return any || input.eof();
-}
-
-void LibraryManager::save_queue_to_disk() const {
-    std::ofstream output("queue.db", std::ios::trunc);
-    if (!output.is_open()) {
-        return;
-    }
-
-    ds::Queue<Book> copy = checkout_queue_;
-    while (!copy.empty()) {
-        output << copy.front().isbn << '\n';
-        copy.pop_front_for_copy();
-    }
-}
-
 void LibraryManager::print_help() const {
     std::cout << "\n=== HELP: Menu Item Explanations ===\n";
-    std::cout << "1: Add book - prompts for Book ID, title, author, year, and category, then saves it.\n";
-    std::cout << "2: Remove book - removes a book by Book ID and saves the updated collection.\n";
+    std::cout << "1: Add book - prompts for Book ID, title, author, year, and category.\n";
+    std::cout << "2: Remove book - removes a book by Book ID from the collection.\n";
     std::cout << "3: View all books - lists the full library sorted by year.\n";
     std::cout << "4: Search - case-insensitive substring match on title, author, or category.\n";
     std::cout << "5: Recently viewed - shows the most recent books you opened or searched.\n";
@@ -375,63 +324,7 @@ void LibraryManager::print_help() const {
     std::cout << "Type 'cancel' during prompts to return to the menu.\n";
 }
 
-bool LibraryManager::load_from_disk() {
-    std::ifstream input("books.db");
-    if (!input.is_open()) {
-        return false;
-    }
 
-    std::string line;
-    bool any_books = false;
-
-    while (std::getline(input, line)) {
-        if (line.empty()) {
-            continue;
-        }
-
-        std::istringstream line_stream(line);
-        Book loaded_book;
-        int status_value = 0;
-
-        if (!(line_stream >> loaded_book.isbn
-                         >> std::quoted(loaded_book.title)
-                         >> std::quoted(loaded_book.author)
-                         >> loaded_book.year)) {
-            continue;
-        }
-
-        loaded_book.category = "General";
-        loaded_book.status = BookStatus::Available;
-
-        if (line_stream >> std::quoted(loaded_book.category)) {
-            if (line_stream >> status_value) {
-                loaded_book.status = status_value == 0 ? BookStatus::Available : BookStatus::Borrowed;
-            }
-        }
-
-        library_.insert(loaded_book);
-        isbn_db_.insert(loaded_book.isbn);
-        any_books = true;
-    }
-
-    return any_books;
-}
-
-void LibraryManager::save_to_disk() const {
-    std::ofstream output("books.db", std::ios::trunc);
-    if (!output.is_open()) {
-        return;
-    }
-
-    for (const auto& book : library_.inorder()) {
-        output << book.isbn << ' '
-               << std::quoted(book.title) << ' '
-               << std::quoted(book.author) << ' '
-               << book.year << ' '
-               << std::quoted(book.category) << ' '
-               << (book.status == BookStatus::Borrowed ? 1 : 0) << '\n';
-    }
-}
 
 bool LibraryManager::find_book_by_isbn(long long isbn, Book& out) const {
     for (const auto& book : library_.inorder()) {
@@ -460,12 +353,10 @@ bool LibraryManager::remove_book_by_isbn(long long isbn, Book& removed) {
         if (queue_copy.front().isbn != isbn) {
             filtered_queue.enqueue(queue_copy.front());
         }
-        queue_copy.pop_front_for_copy();
+        queue_copy.dequeue();
     }
     checkout_queue_ = filtered_queue;
-    save_queue_to_disk();
 
-    save_to_disk();
     return true;
 }
 
@@ -488,7 +379,6 @@ bool LibraryManager::set_book_status(long long isbn, BookStatus new_status, std:
 
     book.status = new_status;
     library_.insert(book);
-    save_to_disk();
     message = new_status == BookStatus::Borrowed ? "Book borrowed successfully." : "Book returned successfully.";
     return true;
 }
@@ -538,7 +428,6 @@ void LibraryManager::run_cli() {
                 Book new_book(isbn, title, author, year, category, BookStatus::Available);
                 library_.insert(new_book);
                 isbn_db_.insert(isbn);
-                save_to_disk();
                 std::cout << "\n[OK] Book added successfully!\n";
             } else if (choice == "2") {
                 long long isbn = read_book_id();
@@ -618,8 +507,7 @@ void LibraryManager::run_cli() {
                         } else {
                             Book selected;
                             if (prompt_candidate_selection(candidates, selected)) {
-                                checkout_queue_.enqueue(selected);
-                                save_queue_to_disk();
+                                                checkout_queue_.enqueue(selected);
                                 std::cout << "\n[OK] Added to checkout queue: ";
                                 selected.display();
                             }
@@ -632,7 +520,6 @@ void LibraryManager::run_cli() {
                         std::cout << "Removing: ";
                         checkout_queue_.front().display();
                         checkout_queue_.dequeue();
-                        save_queue_to_disk();
                         std::cout << "[OK] Removed front book from the queue.\n";
                     }
                 }
